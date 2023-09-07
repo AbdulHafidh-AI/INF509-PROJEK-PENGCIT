@@ -33,7 +33,7 @@ if uploaded_file is not None:
     col1.write("Citra Asli")
     col1.image(grayscale_image,use_column_width=True)
     
-    st.set_option('deprecation.showPyplotGlobalUse', False)
+    st.set_option('deprecation.showPyplotGlobalUse', False) # Untuk menghindari warning dikarenakan regulasi baru pada streamlit
 
     # Tampilkan histogram citra grayscale di kolom kedua
     col2.write("Histogram Citra")
