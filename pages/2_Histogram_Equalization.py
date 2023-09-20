@@ -57,3 +57,45 @@ if uploaded_file is not None:
     hist_values_eq, bins_eq, _ = plt.hist(equalized_image.ravel(), 256, [0, 256])
     col4.pyplot()
 
+
+    col5, col6 = st.columns(2)
+
+    # Menampilkan citra RGB yang sudah di equalisasi histogramnya
+
+    # Ubah citra ke RGB
+
+    if len(image.shape) == 3:
+        rgb_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    else:
+        rgb_image = image
+
+    # Ubah citra RGB ke HSV
+    hsv_image = cv2.cvtColor(rgb_image, cv2.COLOR_RGB2HSV)
+
+    # Ekualisasi histogram pada channel V
+
+    hsv_image[:, :, 2] = cv2.equalizeHist(hsv_image[:, :, 2])
+
+    # Ubah citra HSV ke RGB
+
+    equalized_rgb_image = cv2.cvtColor(hsv_image, cv2.COLOR_HSV2RGB)
+
+    # Tampilkan citra RGB yang sudah di equalisasi histogramnya
+
+    col5.write("Citra RGB yang sudah di equalisasi histogramnya")
+    col5.image(equalized_rgb_image, use_column_width=True)
+
+    # Tampilkan histogram equalization citra RGB
+
+    col6.write("Histogram Equalization Citra RGB")
+
+    color = ('r', 'g', 'b')
+    for i, col in enumerate(color):
+        histr = cv2.calcHist([equalized_rgb_image], [i], None, [256], [0, 256])
+        plt.plot(histr, color=col)
+        plt.xlim([0, 256])
+
+    col6.pyplot()
+
+    
+
