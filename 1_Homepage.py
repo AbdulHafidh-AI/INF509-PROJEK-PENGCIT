@@ -8,6 +8,7 @@ st.set_page_config(
 
 
 st.title("Projek Pengolahan Citra")
+st.header("By Kelompok 1")
 
 
 ### Menampilkan creator yang membuat web ini
@@ -37,3 +38,6 @@ with col3:
    ### Furqan 
    """)
    st.image('public/assets/image/about_us/Furqan.png')
+
+
+st.write("Projek ini bertujuan untuk memenuhi tugas mata kuliah Pengolahan Citra. Projek ini dibuat oleh Faqih, Abdul, dan Furqan.")

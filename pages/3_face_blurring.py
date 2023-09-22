@@ -15,18 +15,26 @@ eye_cascade = cv2.CascadeClassifier('haarcascade_eye.xml')
 smile_cascade = cv2.CascadeClassifier('haarcascade_smile.xml')
 
 # Function to apply blur to the detected objects
-def blur_detected_objects(our_image, detections):
+def blur_detected_objects(our_image, detections, blur_strength):
     new_img = np.array(our_image.convert('RGB'))
     img = cv2.cvtColor(new_img, 1)
 
+    # Pastikan kedua dimensi kernel adalah bilangan ganjil
+    kernel_size = (blur_strength, blur_strength)
+    if kernel_size[0] % 2 == 0:
+        kernel_size = (kernel_size[0] + 1, kernel_size[1])
+    if kernel_size[1] % 2 == 0:
+        kernel_size = (kernel_size[0], kernel_size[1] + 1)
+
     for (x, y, w, h) in detections:
         roi = img[y:y+h, x:x+w]
-        blurred_roi = cv2.GaussianBlur(roi, (25, 25), 0)  # You can adjust the blur kernel size as needed
+        blurred_roi = cv2.GaussianBlur(roi, kernel_size, 0)
         img[y:y+h, x:x+w] = blurred_roi
 
     return img
 
-def detect_faces(our_image):
+
+def detect_faces(our_image, blur_strength):
     new_img = np.array(our_image.convert('RGB'))
     img = cv2.cvtColor(new_img, 1)
     gray = cv2.cvtColor(new_img, cv2.COLOR_BGR2GRAY)
@@ -35,27 +43,23 @@ def detect_faces(our_image):
     # Draw rectangle around the faces
     for (x, y, w, h) in faces:
         cv2.rectangle(img, (x, y), (x+w, y+h), (255, 0, 0), 2)
-        # blur detected faces
-        img = blur_detected_objects(our_image, faces)
+    img = blur_detected_objects(our_image, faces, blur_strength)
     return img, faces 
 
-def detect_eyes(our_image):
+def detect_eyes(our_image, blur_strength):
     new_img = np.array(our_image.convert('RGB'))
     img = cv2.cvtColor(new_img, 1)
     gray = cv2.cvtColor(new_img, cv2.COLOR_BGR2GRAY)
     eyes = eye_cascade.detectMultiScale(gray, 1.3, 5)
     for (ex, ey, ew, eh) in eyes:
         cv2.rectangle(img, (ex, ey), (ex+ew, ey+eh), (0, 255, 0), 2)
-        # blur detected eyes
-        img = blur_detected_objects(our_image, eyes)
+    img = blur_detected_objects(our_image, eyes, blur_strength)
     return img
-
-
 
 def main():
     """Face Detection App"""
-    st.title("Face Detection App")
-    st.header("Built with Streamlit and OpenCV")
+    st.title("Face Detection")
+    st.header("Built by Kelompok 1")
 
     activities = ["Detection", "About"]
     choice = st.sidebar.selectbox("Select Activity", activities)
@@ -72,13 +76,17 @@ def main():
         # Face Detection
         task = ["Faces", "Eyes"]
         feature_choice = st.sidebar.selectbox("Find Features", task)
-        if st.button("Process"):
-            if feature_choice == 'Faces':
-                result_img, result_faces = detect_faces(our_image)
+        
+        blur_strength = st.slider("Set Blur Strength", 5, 50, 25)  # Mengatur kekuatan blur
+        blur_strength = blur_strength // 5 * 5  # Membulatkan ke bilangan perkalian
+        
+        
+        if feature_choice == 'Faces':
+                result_img, result_faces = detect_faces(our_image, blur_strength)
                 st.image(result_img)
                 st.success("Found {} faces".format(len(result_faces)))
-            elif feature_choice == 'Eyes':
-                result_img = detect_eyes(our_image)
+        elif feature_choice == 'Eyes':
+                result_img = detect_eyes(our_image, blur_strength)
                 st.image(result_img)
 
     elif choice == 'About':
