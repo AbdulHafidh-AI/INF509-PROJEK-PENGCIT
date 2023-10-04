@@ -1,6 +1,5 @@
-pengcit_env
+env/
 __pycache__
 
 # extension with .torch
 *.torch
-
