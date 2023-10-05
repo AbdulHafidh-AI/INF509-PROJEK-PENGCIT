@@ -5,6 +5,11 @@ import streamlit as st
 import tempfile
 import os
 
+
+st.header("Vintage Image")
+
+st.write("Pada halaman ini, kita akan mencoba untuk memberikan efek vintage pada citra yang diunggah dengan filter sepia.")
+
 # upload file
 uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
 
@@ -38,5 +43,12 @@ if uploaded_file is not None:
 
     col2.write("Citra yang sudah diberi efek sepia")
 
-    col2.image(sepia_img, use_column_width=True)
+    #
+    # save image to local storage
+
+    cv2.imwrite('sepia_img.jpg', sepia_img)
+
+    col2.image('sepia_img.jpg', use_column_width=True)
+
+
 
