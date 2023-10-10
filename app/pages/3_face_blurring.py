@@ -10,9 +10,9 @@ def load_image(img):
     im = Image.open(img)
     return im
 
-face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
-eye_cascade = cv2.CascadeClassifier('haarcascade_eye.xml')
-smile_cascade = cv2.CascadeClassifier('haarcascade_smile.xml')
+face_cascade = cv2.CascadeClassifier('app/haarcascade_frontalface_default.xml')
+eye_cascade = cv2.CascadeClassifier('app/haarcascade_eye.xml')
+# smile_cascade = cv2.CascadeClassifier('haarcascade_smile.xml')
 
 # Function to apply blur to the detected objects
 def blur_detected_objects(our_image, detections, blur_strength):
