@@ -1,4 +1,10 @@
-# INF509-PROJEK-PENGCIT
+# INF509-PROJEK-PENGCIT (Group 1)
+
+## Team Member
+Our team consist 3 people:
+1. ABDUL HAFIDH 
+2. AHMAD FAQIH AL GHIFFARY
+3. FURQAN AL GHIFARI ZULVA
 
 ## Overview
 
