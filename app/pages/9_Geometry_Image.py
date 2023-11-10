@@ -24,7 +24,7 @@ def bilinear_interpolation(image, dimension):
     '''
     return image.resize(dimension, Image.BILINEAR)
 
-def cubic_interpolation(image, dimension):
+def lanczos_interpolation(image, dimension):
     '''Cubic interpolation method to convert small image to original image
     Parameters:
     image (PIL.Image): Small image
@@ -41,15 +41,15 @@ st.title("Geometrical Image")
 uploaded_image = st.file_uploader("Upload an image", type=["jpg", "png", "jpeg"])
 
 if uploaded_image:
-    st.image(uploaded_image, caption="Uploaded Image", use_column_width=True)
+    st.image(uploaded_image, caption="Uploaded Image", use_column_width="never")
 
     # Slider to adjust scale percent
-    scale_percent = st.slider("Scale Percent", 1, 100, 50)
+    scale_percent = st.slider("Scale Percent", 1, 1000, 30)
 
     # Display the original image
     img = Image.open(uploaded_image)
     st.header("Original Image")
-    st.image(img, use_column_width=True)
+    st.image(img, use_column_width="never")
 
     # Display the resized image using nearest neighbor interpolation
     st.header("Resized (Nearest Neighbor)")
@@ -65,6 +65,20 @@ if uploaded_image:
     resized_bilinear = bilinear_interpolation(img, dim)
     st.image(resized_bilinear, use_column_width=True)
 
-    st.header("Resized (Cubic)")
-    resized_cubic = cubic_interpolation(img, dim)
+    st.header("Resized (Lanczos)")
+    resized_cubic = lanczos_interpolation(img, dim)
     st.image(resized_cubic, use_column_width=True)
+    
+    
+
+    # # Add vertical spacing using Markdown
+    # st.markdown("<div style='height:500px'></div>", unsafe_allow_html=True)
+    
+    # st.header("Resized (Nearest Neighbor actual size)")
+    # st.image(resized_nearest, use_column_width="never")
+
+    # st.header("Resized (Bilinear actual size)")
+    # st.image(resized_bilinear, use_column_width="never")
+
+    # st.header("Resized (Lanczos actual size)")
+    # st.image(resized_cubic, use_column_width="never")
