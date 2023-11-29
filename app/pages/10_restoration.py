@@ -12,9 +12,6 @@ def apply_median_filter(image, size=3):
 def apply_rank_order_filter(image, rank=3):
     return rank_filter(image, rank, size=3)
 
-def apply_outlier_method(image, threshold=30):
-    cleaned = np.where(np.abs(image - np.median(image)) <= threshold, image, np.median(image))
-    return cleaned
 
 def apply_gaussian_noise(image, sigma=25):
     row, col, ch = image.shape
@@ -42,10 +39,10 @@ def main():
     """Image Restoration"""
     st.title("Image Restoration")
 
-    activities = ["Noise Removal", "Image Denoising"]
+    activities = ["Noise Generator", "Image Denoising"]
     choice = st.sidebar.selectbox("Select Activity", activities)
 
-    if choice == "Noise Removal":
+    if choice == "Noise Generator":
         noise_removal()
     elif choice == "Image Denoising":
         image_denoising()
@@ -112,9 +109,6 @@ def image_denoising():
         elif filter_type == "Rank Order Filter":
             rank = st.slider("Select Rank for Rank Order Filter", 1, 10, 3, step=1)
             filtered_image = apply_rank_order_filter(img_array, rank=rank)
-        elif filter_type == "Outlier Method":
-            threshold = st.slider("Select Threshold for Outlier Method", 1, 100, 30, step=1)
-            filtered_image = apply_outlier_method(img_array, threshold=threshold)
 
         # Display the filtered image
         st.image(filtered_image, caption=f"{filter_type} Result", use_column_width=True)
